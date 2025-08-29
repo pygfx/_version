@@ -136,6 +136,7 @@ CLI_USAGE = """
 _version.py
 
 help            - Show this message.
+version         - Show the current version.
 bump VERSION    - Bump the __version__ to the given VERSION.
 update          - Self-update the _version.py module by downloading the
                   reference code and replacing version number and project name.
@@ -148,6 +149,9 @@ if __name__ == "__main__":
     _, *args = sys.argv
 
     if not args:
+        print(f"{project_name} v{__version__}")
+
+    elif args[0] == "version":
         print(f"{project_name} v{__version__}")
 
     elif args[0] == "bump":
@@ -175,5 +179,9 @@ if __name__ == "__main__":
             f.write(text.encode())
         print("Updated to the latest _version.py.")
 
-    else:
+    elif args[0].lstrip("-") in ["h", "help"]:
         print(CLI_USAGE)
+
+    else:
+        print(f"Unknown command for _version.py: {args[0]!r}")
+        print("Use ``python _version.py help`` to see a list of options.")
