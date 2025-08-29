@@ -1,5 +1,5 @@
 """
-_version.py
+_version.py v1.2
 
 Simple version string management, using a hard-coded version string
 for simplicity and compatibility, while adding git info at runtime.
@@ -17,7 +17,7 @@ import subprocess
 from pathlib import Path
 
 
-# This is the reference version number, to be bumped before each release.
+# This is the base version number, to be bumped before each release.
 # The build system detects this definition when building a distribution.
 __version__ = "0.0.0"
 
@@ -125,6 +125,7 @@ def _to_tuple(v):
 
 
 # Apply the versioning
+base_version = __version__
 __version__ = get_version()
 version_info = _to_tuple(__version__)
 
@@ -134,8 +135,9 @@ version_info = _to_tuple(__version__)
 CLI_USAGE = """
 _version.py
 
-update  - Self-update the _version.py module by downloading the reference
-          and replacing version number and project name.
+bump VERSION    - Bump the __version__ to the given VERSION.
+update          - Self-update the _version.py module by downloading the
+                  reference code and replacing version number and project name.
 """.lstrip()
 
 if __name__ == "__main__":
@@ -147,17 +149,30 @@ if __name__ == "__main__":
     if not args:
         print(CLI_USAGE)
 
-    elif args[0] == "update":
-        url = (
-            "https://raw.githubusercontent.com/pygfx/_version/main/_version.py"
-        )
-        with urllib.request.urlopen(url) as f:
-            ref_text = f.read().decode()
+    elif args[0] == "bump":
+        if len(args) != 2:
+            sys.exit("Expected a version number to bump to.")
+        new_version = args[1].lstrip("v")  # allow '1.2.3' and 'v1.2.3'
+        if not new_version.count(".") == 2:
+            sys.exit("Expected two dots in new version string.")
+        if not all(s.isnumeric() for s in new_version.split(".")):
+            sys.exit("Expected only numbers in new version string.")
+        with open(__file__, "rb") as f:
+            text = ref_text = f.read().decode()
+        text = text.replace(base_version, new_version, 1)
+        with open(__file__, "wb") as f:
+            f.write(text.encode())
+        print(f"Bumped version from '{base_version}' to '{new_version}'.")
 
-        text = ref_text.replace("0.0.0", __version__.split(".post")[0], 1)
+    elif args[0] == "update":
+        u = "https://raw.githubusercontent.com/pygfx/_version/main/_version.py"
+        with urllib.request.urlopen(u) as f:
+            text = ref_text = f.read().decode()
+        text = text.replace("0.0.0", base_version, 1)
         text = text.replace("PROJECT_NAME", project_name, 1)
         with open(__file__, "wb") as f:
             f.write(text.encode())
+        print("Updated to the latest _version.py.")
 
     else:
         print(CLI_USAGE)
