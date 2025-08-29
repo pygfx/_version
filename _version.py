@@ -6,6 +6,8 @@ for simplicity and compatibility, while adding git info at runtime.
 See https://github.com/pygfx/_version for more info.
 This code is subject to The Unlicense (public domain).
 
+Any updates to this file should be done in https://github.com/pygfx/_version
+
 Usage in short:
 
 * Add this file to the root of your library (next to the `__init__.py`).
