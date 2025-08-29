@@ -146,6 +146,7 @@ if __name__ == "__main__":
 
     if not args:
         print(CLI_USAGE)
+
     elif args[0] == "update":
         url = (
             "https://raw.githubusercontent.com/pygfx/_version/main/_version.py"
@@ -153,9 +154,8 @@ if __name__ == "__main__":
         with urllib.request.urlopen(url) as f:
             ref_text = f.read().decode()
 
-        text = ref_text.replace("0.0.0", ".".join(version_info[:3]))
-        text = text.replace("PROJECT_NAME", project_name)
-
+        text = ref_text.replace("0.0.0", __version__.split(".post")[0], 1)
+        text = text.replace("PROJECT_NAME", project_name, 1)
         with open(__file__, "wb") as f:
             f.write(text.encode())
 
