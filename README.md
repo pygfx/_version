@@ -50,6 +50,10 @@ To update the module:
 
 BTW, getting a version on the command line can be done with:
 ```
+# On projects that use _version.py
+python path/to/_version.py
+
+# Generic way
 python -c "import pygfx; print(pygfx.__version__)"
 ```
 
