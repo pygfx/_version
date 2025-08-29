@@ -135,6 +135,7 @@ version_info = _to_tuple(__version__)
 CLI_USAGE = """
 _version.py
 
+help            - Show this message.
 bump VERSION    - Bump the __version__ to the given VERSION.
 update          - Self-update the _version.py module by downloading the
                   reference code and replacing version number and project name.
@@ -147,7 +148,7 @@ if __name__ == "__main__":
     _, *args = sys.argv
 
     if not args:
-        print(CLI_USAGE)
+        print(f"{project_name} v{__version__}")
 
     elif args[0] == "bump":
         if len(args) != 2:
