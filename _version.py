@@ -1,6 +1,15 @@
 """
-Versioning: we use a hard-coded version number, because it's simple and always
-works. For dev installs we add extra version info from Git.
+_version.py
+
+Simple version string management, using a hard-coded version string
+for simplicity and compatibility, while adding git info at runtime.
+See https://github.com/pygfx/_version for more info.
+This code is subject to The Unlicense (public domain).
+
+Usage in short:
+
+* Add this file to the root of your library (next to the `__init__.py`).
+* On a new release, you just update the __version__.
 """
 
 import logging
@@ -10,15 +19,15 @@ from pathlib import Path
 
 # This is the reference version number, to be bumped before each release.
 # The build system detects this definition when building a distribution.
-__version__ = "0.12.0"
+__version__ = "0.0.0"
 
-# Allow using nearly the same code in different projects
-project_name = "pygfx"
+# Set this to your library name
+project_name = "PROJECT_NAME"
 
 
-logger = logging.getLogger(project_name.lower())
+logger = logging.getLogger(project_name)
 
-# Get whether this is a repo. If so, repo_dir is the path, otherwise repo_dir is None.
+# Get whether this is a repo. If so, repo_dir is the path, otherwise None.
 repo_dir = Path(__file__).parents[1]
 repo_dir = repo_dir if repo_dir.joinpath(".git").is_dir() else None
 
@@ -44,7 +53,8 @@ def get_extended_version():
         release = base_release
     elif release != base_release:
         logger.warning(
-            f"{project_name} version from git ({release}) and __version__ ({base_release}) don't match."
+            f"{project_name} version from git ({release})"
+            + f" and __version__ ({base_release}) don't match."
         )
 
     # Build the total version
@@ -100,7 +110,7 @@ def get_version_info_from_git():
         else:
             parts = output.strip().lstrip("v").split("-")
             if len(parts) <= 2:
-                # No tags (and thus also no post). Only git hash and maybe 'dirty'
+                # No tags (and thus no post). Only git hash and maybe 'dirty'.
                 parts = (None, None, *parts)
 
     # Return unpacked parts
@@ -108,8 +118,46 @@ def get_version_info_from_git():
     return release, post, labels
 
 
-__version__ = get_version()
+def _to_tuple(v):
+    """Convert __version__ to version_info tuple."""
+    v = __version__.split("+")[0]  # remove hash
+    return tuple(int(i) if i.isnumeric() else i for i in v.split("."))
 
-version_info = tuple(
-    int(i) if i.isnumeric() else i for i in __version__.split("+")[0].split(".")
-)
+
+# Apply the versioning
+__version__ = get_version()
+version_info = _to_tuple(__version__)
+
+
+# The CLI part
+
+CLI_USAGE = """
+_version.py
+
+update  - Self-update the _version.py module by downloading the reference
+          and replacing version number and project name.
+""".lstrip()
+
+if __name__ == "__main__":
+    import sys
+    import urllib.request
+
+    _, *args = sys.argv
+
+    if not args:
+        print(CLI_USAGE)
+    elif args[0] == "update":
+        url = (
+            "https://raw.githubusercontent.com/pygfx/_version/main/_version.py"
+        )
+        with urllib.request.urlopen(url) as f:
+            ref_text = f.read().decode()
+
+        text = ref_text.replace("0.0.0", ".".join(version_info[:3]))
+        text = text.replace("PROJECT_NAME", project_name)
+
+        with open(__file__, "wb") as f:
+            f.write(text.encode())
+
+    else:
+        print(CLI_USAGE)
