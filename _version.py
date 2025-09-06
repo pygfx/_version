@@ -1,5 +1,5 @@
 """
-_version.py v1.2
+_version.py v1.3
 
 Simple version string management, using a hard-coded version string
 for simplicity and compatibility, while adding git info at runtime.
@@ -31,7 +31,7 @@ logger = logging.getLogger(project_name)
 
 # Get whether this is a repo. If so, repo_dir is the path, otherwise None.
 repo_dir = Path(__file__).parents[1]
-repo_dir = repo_dir if repo_dir.joinpath(".git").is_dir() else None
+repo_dir = repo_dir if repo_dir.joinpath(".git").exists() else None
 
 
 def get_version():
