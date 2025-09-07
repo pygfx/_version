@@ -18,7 +18,7 @@ The "installation":
 
 * Add the `_version.py` to the root of your library (next to the `__init__.py`).
 * Set the project name and `__version__` string.
-* In your `__init__.py`, use `from _version import __version__, version_info`.
+* In your `__init__.py`, use `from ._version import __version__, version_info`.
 * In `pyproject.toml` use `dynamic = ["version"]`.
 * The Flit build tool will now detect your project version. Other tools may
   need an extra line, e.g. `[tool.hatch.version]` `path = "lib_name/_version.py"`.
