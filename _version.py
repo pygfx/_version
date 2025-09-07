@@ -30,6 +30,7 @@ project_name = "PROJECT_NAME"
 logger = logging.getLogger(project_name)
 
 # Get whether this is a repo. If so, repo_dir is the path, otherwise None.
+# .git is a dir in a normal repo and a file when in a submodule.
 repo_dir = Path(__file__).parents[1]
 repo_dir = repo_dir if repo_dir.joinpath(".git").exists() else None
 
