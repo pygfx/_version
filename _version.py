@@ -1,5 +1,5 @@
 """
-_version.py v1.3
+_version.py v1.4
 
 Simple version string management, using a hard-coded version string
 for simplicity and compatibility, while adding git info at runtime.
