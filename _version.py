@@ -14,7 +14,7 @@ Usage in short:
 * On a new release, you just update the __version__.
 """
 
-# ruff: noqa: RUF100, S310, PLR2004, D400, D415, S603, BLE001
+# ruff: noqa: RUF100, S310, PLR2004, D212, D400, D415, S603, BLE001, COM812
 
 import logging
 import subprocess
