@@ -2,4 +2,7 @@
 line-length = 80
 
 [tool.ruff.lint]
-select = ["F", "E", "W", "N", "B", "RUF", "TC"]
+# Run all the rules, we turn some rules off in the file itself.
+select = ["ALL"]
+# Ignore rules that are conflicting, and would otherwise produce a warning with 'ruff format'
+ignore = ["D203", "D212", "COM812"]
