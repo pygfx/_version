@@ -1,6 +1,3 @@
-[tool.ruff]
-line-length = 80
-
 [tool.ruff.lint]
 # Run all the rules, we turn some rules off in the file itself.
 select = ["ALL"]
