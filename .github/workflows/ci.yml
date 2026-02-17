@@ -37,7 +37,7 @@ jobs:
           ruff format --check .
 
   tests:
-    name: Linting
+    name: Unit tests
     timeout-minutes: 5
     runs-on: ubuntu-latest
     strategy:
