@@ -7,7 +7,6 @@ import sys
 
 import _version
 
-
 example_versions = [
     ("1", (1,)),
     ("1.2", (1, 2)),
