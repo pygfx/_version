@@ -64,6 +64,3 @@ The `_version.py` is formatted with Ruff under a strict ruleset so it
 can be adopted in most projects without changes.
 
 On every change (i.e. PR) update `_version.py`'s version on the first line.
-
-We don't have tests yet, because we mainly use this for projects related to PyGfx.
-Maybe we can add some tests later ... though we don't expect this module to change much.
