@@ -36,3 +36,22 @@ jobs:
       run: |
           ruff format --check .
 
+  tests:
+    name: Unit tests
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v5
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
+    - name: Install dependencies
+      run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+    - name: Unit tests
+      run: |
+          pytest -v .
