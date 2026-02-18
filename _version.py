@@ -141,7 +141,7 @@ def get_version_info_from_git(
 
 def version_to_tuple(v: str) -> tuple:
     parts = []
-    for part in v.split("+")[0].split("."):
+    for part in v.split("+", maxsplit=1)[0].split("."):
         if not part:
             pass
         elif part.startswith("post"):
